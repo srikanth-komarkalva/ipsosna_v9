@@ -148,23 +148,27 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.TimePeriodLabel ;;
   }
 
-  dimension: un_wt_base {
-    type: number
+  measure: un_wt_base {
+    type: sum
+    value_format_name: decimal_0
     sql: ${TABLE}.UnWtBase ;;
   }
 
-  dimension: un_wt_count {
-    type: number
+  measure: un_wt_count {
+    type: sum
+    value_format_name: decimal_0
     sql: ${TABLE}.UnWtCount ;;
   }
 
-  dimension: wt_base {
-    type: number
+  measure: wt_base {
+    type: sum
+    value_format_name: decimal_0
     sql: ${TABLE}.WtBase ;;
   }
 
-  dimension: wt_count {
-    type: number
+  measure: wt_count {
+    type: sum
+    value_format_name: decimal_0
     sql: ${TABLE}.WtCount ;;
   }
 
