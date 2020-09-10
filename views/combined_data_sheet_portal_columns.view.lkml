@@ -4,21 +4,21 @@ view: combined_data_sheet_portal_columns {
 
   dimension: banner_color_hex_code {
 #     hidden: yes
-    group_item_label: "Portal Attributes"
+    group_label: "Portal Attributes"
     type: string
     sql: ${TABLE}.BannerColorHexCode ;;
   }
 
   dimension: banner_display_order {
 #     hidden: yes
-    group_item_label: "Portal Attributes"
+    group_label: "Portal Attributes"
     type: number
     sql: ${TABLE}.BannerDisplayOrder ;;
   }
 
   dimension: banner_group_label {
     type: string
-    group_item_label: "Portal Attributes"
+    group_label: "Portal Attributes"
 #     hidden: yes
     sql: ${TABLE}.BannerGroupLabel ;;
   }
@@ -26,26 +26,27 @@ view: combined_data_sheet_portal_columns {
   dimension: banner_id {
 #     hidden: yes
     type: number
-    group_item_label: "Portal Attributes"
+    group_label: "Portal Attributes"
     sql: ${TABLE}.BannerId ;;
   }
 
   dimension: banner_label {
     label: "Banner Label"
     type: string
+    group_label: "Demographic Fields"
     sql: ${TABLE}.BannerLabel ;;
   }
 
   dimension: category_display_order {
     type: number
-    group_item_label: "Sort Fields"
+    group_label: "Sort Fields"
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
   dimension: market_code {
     label: "Country"
     type: string
-    group_item_label: "Demographic Fields"
+    group_label: "Demographic Fields"
     sql: ${TABLE}.MarketCode ;;
   }
 
@@ -64,13 +65,14 @@ view: combined_data_sheet_portal_columns {
   dimension: metric_category_label {
     type: string
     label: "Response Label"
+    group_label: "Question Information"
 #     order_by_field: category_display_order
     sql: ${TABLE}.MetricCategoryLabel ;;
   }
 
   dimension: metric_code {
     label: "Metric Code"
-    group_item_label: "Sort Fields"
+    group_label: "Sort Fields"
     order_by_field: metric_display_order
     type: string
     sql: ${TABLE}.MetricCode ;;
@@ -78,7 +80,7 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_display_order {
     type: number
-    group_item_label: "Sort Fields"
+    group_label: "Sort Fields"
     sql: ${TABLE}.MetricDisplayOrder ;;
   }
 
@@ -108,7 +110,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: product_color_hex_code {
-    group_item_label: "Portal Attributes"
+    group_label: "Portal Attributes"
     type: string
     sql: ${TABLE}.ProductColorHexCode ;;
   }
@@ -133,38 +135,38 @@ view: combined_data_sheet_portal_columns {
 
   dimension: rank_desc {
     type: number
-    group_item_label: "Sort Fields"
+    group_label: "Sort Fields"
     sql: ${TABLE}.RankDesc ;;
   }
 
   dimension: score {
     type: number
-    group_item_label: "Sig Test Attributes"
+    group_label: "Sig Test Attributes"
     sql: ${TABLE}.Score ;;
   }
 
   dimension: sig_test_codes {
-    group_item_label: "Sig Test Attributes"
+    group_label: "Sig Test Attributes"
     type: number
     sql: ${TABLE}.SigTestCodes ;;
   }
 
   dimension: sig_test_number_of_items_compared_against {
     type: number
-    group_item_label: "Sig Test Attributes"
+    group_label: "Sig Test Attributes"
     sql: ${TABLE}.SigTestNumberOfItemsComparedAgainst ;;
   }
 
   dimension: sig_test_primary {
     label: "Stat Test Result"
     type: string
-    group_item_label: "Sig Test Attributes"
+    group_label: "Sig Test Attributes"
     sql: ${TABLE}.SigTestPrimary ;;
   }
 
   dimension: sig_test_secondary {
     type: string
-    group_item_label: "Sig Test Attributes"
+    group_label: "Sig Test Attributes"
     sql: ${TABLE}.SigTestSecondary ;;
   }
 
@@ -178,7 +180,7 @@ view: combined_data_sheet_portal_columns {
     type: string
     label: "Wave"
     order_by_field: wave_date
-    group_item_label: "Demographic Fields"
+    group_label: "Demographic Fields"
     sql: ${TABLE}.TimePeriodLabel ;;
   }
 
