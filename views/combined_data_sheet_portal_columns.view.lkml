@@ -67,12 +67,13 @@ view: combined_data_sheet_portal_columns {
     label: "Response Label"
     group_label: "Question Information"
 #     order_by_field: category_display_order
+#     skip_drill_filter: yes
     sql: ${TABLE}.MetricCategoryLabel ;;
   }
 
   dimension: metric_code {
     label: "Metric Code"
-    group_label: "Sort Fields"
+   group_label: "Question Information"
     order_by_field: metric_display_order
     type: string
     sql: ${TABLE}.MetricCode ;;
@@ -86,12 +87,14 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_group_id {
     type: string
+    hidden: yes
     group_label: "Question Information"
     sql: ${TABLE}.MetricGroupId ;;
   }
 
   dimension: metric_group_label {
     type: string
+    hidden: yes
     group_label: "Question Information"
     sql: ${TABLE}.MetricGroupLabel ;;
   }
@@ -293,9 +296,9 @@ view: combined_data_sheet_portal_columns {
     ;;
   }
 
-  dimension: wt_percent {
-    type: number
-    hidden: yes
+  measure: wt_percent {
+    type: sum
+    label: "Weighted Percent"
     sql: ${TABLE}.WtPercent ;;
   }
 }
