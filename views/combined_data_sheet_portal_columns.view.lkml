@@ -3,26 +3,30 @@ view: combined_data_sheet_portal_columns {
     ;;
 
   dimension: banner_color_hex_code {
-    hidden: yes
+#     hidden: yes
+    group_item_label: "Portal Attributes"
     type: string
     sql: ${TABLE}.BannerColorHexCode ;;
   }
 
   dimension: banner_display_order {
-    hidden: yes
+#     hidden: yes
+    group_item_label: "Portal Attributes"
     type: number
     sql: ${TABLE}.BannerDisplayOrder ;;
   }
 
   dimension: banner_group_label {
     type: string
-    hidden: yes
+    group_item_label: "Portal Attributes"
+#     hidden: yes
     sql: ${TABLE}.BannerGroupLabel ;;
   }
 
   dimension: banner_id {
-    hidden: yes
+#     hidden: yes
     type: number
+    group_item_label: "Portal Attributes"
     sql: ${TABLE}.BannerId ;;
   }
 
@@ -34,12 +38,14 @@ view: combined_data_sheet_portal_columns {
 
   dimension: category_display_order {
     type: number
+    group_item_label: "Sort Fields"
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
   dimension: market_code {
     label: "Country"
     type: string
+    group_item_label: "Demographic Fields"
     sql: ${TABLE}.MarketCode ;;
   }
 
@@ -64,6 +70,7 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_code {
     label: "Metric Code"
+    group_item_label: "Sort Fields"
     order_by_field: metric_display_order
     type: string
     sql: ${TABLE}.MetricCode ;;
@@ -71,27 +78,32 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_display_order {
     type: number
+    group_item_label: "Sort Fields"
     sql: ${TABLE}.MetricDisplayOrder ;;
   }
 
   dimension: metric_group_id {
     type: string
+    group_label: "Question Information"
     sql: ${TABLE}.MetricGroupId ;;
   }
 
   dimension: metric_group_label {
     type: string
+    group_label: "Question Information"
     sql: ${TABLE}.MetricGroupLabel ;;
   }
 
   dimension: metric_id {
     type: number
+    group_label: "Question Information"
     primary_key: yes
     sql: ${TABLE}.metricID ;;
   }
 
   dimension: metric_label {
     type: string
+    group_label: "Question Information"
     sql: ${TABLE}.MetricLabel ;;
   }
 
@@ -103,26 +115,31 @@ view: combined_data_sheet_portal_columns {
 
   dimension: product_display_order {
     type: number
+    group_label: "Sort Fields"
     sql: ${TABLE}.ProductDisplayOrder ;;
   }
 
   dimension: product_id {
+    group_label: "Question Information"
     type: number
     sql: ${TABLE}.ProductId ;;
   }
 
   dimension: product_label {
     type: string
+    group_label: "Question Information"
     sql: ${TABLE}.ProductLabel ;;
   }
 
   dimension: rank_desc {
     type: number
+    group_item_label: "Sort Fields"
     sql: ${TABLE}.RankDesc ;;
   }
 
   dimension: score {
     type: number
+    group_item_label: "Sig Test Attributes"
     sql: ${TABLE}.Score ;;
   }
 
@@ -160,7 +177,73 @@ view: combined_data_sheet_portal_columns {
   dimension: time_period_label {
     type: string
     label: "Wave"
+    order_by_field: wave_date
+    group_item_label: "Demographic Fields"
     sql: ${TABLE}.TimePeriodLabel ;;
+  }
+
+  dimension: wave_year {
+    hidden: yes
+    group_label: "Demographic Fields"
+    type: number
+    sql: CAST(SUBSTR(${time_period_label},5,4) AS INT64);;
+  }
+
+  dimension: wave_month_part {
+    hidden: yes
+    group_label: "Demographic Fields"
+    type: string
+    sql: SUBSTR(${time_period_label},1,3);;
+  }
+
+  dimension: wave_month {
+    hidden: yes
+    group_label: "Demographic Fields"
+    type: number
+    sql: CAST(
+          CASE ${time_period_label}
+          WHEN 'Jan' THEN 1
+          WHEN 'Feb' THEN 2
+          WHEN 'Mar' THEN 3
+          WHEN 'Apr' THEN 4
+          WHEN 'May' THEN 5
+          WHEN 'Jun' THEN 6
+          WHEN 'Jul' THEN 7
+          WHEN 'Aug' THEN 8
+          WHEN 'Sep' THEN 9
+          WHEN 'Oct' THEN 10
+          WHEN 'Nov' THEN 11
+          WHEN 'Dec' THEN 12
+          ELSE 1
+          END
+          AS INT64) ;;
+  }
+
+  dimension: wave_day_part {
+    hidden: yes
+    group_label: "Demographic Fields"
+    type: string
+    sql: SUBSTR(${time_period_label},12,2);;
+  }
+
+  dimension: wave_day {
+    hidden: yes
+    group_label: "Demographic Fields"
+    type: number
+    sql: CAST(CASE ${wave_day_part}
+          WHEN 'W1' THEN 1
+          WHEN 'W2' THEN 15
+          WHEN 'Ne' THEN 1
+          WHEN 'Pa' THEN 1
+          ELSE 1
+          END AS INT64) ;;
+  }
+
+  dimension: wave_date {
+    label: "Wave (Date)"
+    group_label: "Demographic Fields"
+    type: date
+    sql: CAST(date(${wave_year},${wave_month},${wave_day}) as TIMESTAMP) ;;
   }
 
   measure: un_wt_base {
