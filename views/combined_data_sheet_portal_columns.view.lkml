@@ -298,7 +298,9 @@ view: combined_data_sheet_portal_columns {
 
   measure: wt_percent {
     type: sum
+    hidden: yes
     label: "Weighted Percent"
+    value_format_name: percent_0
     sql: ${TABLE}.WtPercent ;;
   }
 }
