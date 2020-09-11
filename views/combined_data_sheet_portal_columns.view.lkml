@@ -287,13 +287,23 @@ view: combined_data_sheet_portal_columns {
 
   measure: stat_result {
     type: sum
-    sql: CASE ${sig_test_primary}
+    sql:
+    CASE ${significance_dropdown_dim}
+    WHEN "WoW" THEN
+    (     CASE ${sig_test_primary}
           WHEN 'Increase' THEN 1
           WHEN 'Decrease' THEN -1
           WHEN 'No change' THEN 0
           WHEN 'N/A' THEN 2
-          END
-    ;;
+          END)
+    WHEN "YoY" THEN
+    (     CASE ${sig_test_secondary}
+          WHEN 'Increase' THEN 1
+          WHEN 'Decrease' THEN -1
+          WHEN 'No change' THEN 0
+          WHEN 'N/A' THEN 2
+          END)
+    END ;;
   }
 
   measure: wt_percent {
@@ -303,4 +313,27 @@ view: combined_data_sheet_portal_columns {
     value_format_name: percent_0
     sql: ${TABLE}.WtPercent ;;
   }
+
+  parameter: significance_dropdown {
+    label: "Choose Significance WoW or YoY"
+    description: "Choose Significance for crosstabs"
+    type: string
+    allowed_value: {
+      label: "WoW"
+      value: "WoW"
+    }
+    allowed_value: {
+      label: "YoY"
+      value: "YoY"
+    }
+  }
+
+#Significance Filter
+  dimension: significance_dropdown_dim {
+    label: "Significance"
+    group_label: "Parameters"
+    type: string
+    sql: {% parameter significance_dropdown  %};;
+  }
+
 }
