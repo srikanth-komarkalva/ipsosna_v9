@@ -43,6 +43,15 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
+#   dimension: category_display_order_1 {
+#     type: number
+#     group_label: "Sort Fields"
+#     sql: sum(${category_display_order}) OVER ( PARTITION BY
+#                     {% if market_code._is_selected %}  ${market_code}, {% endif %}
+#                     {% if time_period_label._is_selected %} ${time_period_label}, {% endif %}
+#                     1);;
+#   }
+
   dimension: market_code {
     label: "Country"
     type: string
