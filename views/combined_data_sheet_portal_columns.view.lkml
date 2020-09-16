@@ -161,8 +161,8 @@ view: combined_data_sheet_portal_columns {
     type: string
     group_label: "Question Information"
     sql:  CONCAT(
-          SPLIT(${metric_without_brand}, '_')[SAFE_OFFSET(0)],"_",
-          SPLIT(${metric_without_brand}, '_')[SAFE_OFFSET(1)])
+          SPLIT(${metric_code}, '_')[SAFE_OFFSET(0)],"_",
+          SPLIT(${metric_code}, '_')[SAFE_OFFSET(1)])
           ;;
   }
 #   dimension: metric_without_brand_new {
