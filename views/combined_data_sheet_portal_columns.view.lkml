@@ -43,6 +43,88 @@ view: combined_data_sheet_portal_columns {
 # ORDER BY categoryDisplayOrder;;
 # }
 
+
+#Defining parameters for Dynamic column selection in Cross tab charts
+  parameter: attribute_selector1 {
+    label: "Banner Selector 1"
+#     description: "Banner selector for crosstabs"
+    type: unquoted
+
+    allowed_value: {
+      label: "Brand"
+      value: "ProductLabel"
+    }
+
+    allowed_value: {
+      label: "Country"
+      value: "MarketCode"
+    }
+
+    allowed_value: {
+      label: "Wave"
+      value: "TimePeriodLabel"
+    }
+  }
+
+  parameter: attribute_selector2 {
+#     description: "Banner selector for crosstabs"
+    label: "Banner Selector 2"
+    type: unquoted
+
+    allowed_value: {
+      label: "Brand"
+      value: "ProductLabel"
+    }
+
+    allowed_value: {
+      label: "Country"
+      value: "MarketCode"
+    }
+
+    allowed_value: {
+      label: "Wave"
+      value: "TimePeriodLabel"
+    }
+  }
+
+  dimension: attribute_selector1_dim {
+    group_label: "Banner Analysis"
+    label: "Banner Selector 1"
+    order_by_field: attribute_selector1_sort
+    description: "To be used with the Banner Selector filters"
+    label_from_parameter: attribute_selector1
+    sql: ${TABLE}.{% parameter attribute_selector1 %};;
+  }
+
+  dimension: attribute_selector2_dim {
+    group_label: "Banner Analysis"
+    label: "Banner Selector 2"
+    order_by_field: attribute_selector2_sort
+    description: "To be used with the Banner Selector filters"
+    label_from_parameter: attribute_selector2
+    sql: ${TABLE}.{% parameter attribute_selector2 %};;
+  }
+
+  dimension: attribute_selector1_sort {
+    hidden: yes
+    sql:
+    {% if attribute_selector1._parameter_value == 'time_period_label' %}
+      ${wave_date}
+    {% else %}
+      ${attribute_selector1_dim}
+    {% endif %};;
+  }
+
+  dimension: attribute_selector2_sort {
+    hidden: yes
+    sql:
+    {% if attribute_selector2._parameter_value == 'time_period_label' %}
+      ${wave_date}
+    {% else %}
+      ${attribute_selector2_dim}
+    {% endif %};;
+  }
+
   dimension: banner_color_hex_code {
 #     hidden: yes
     group_label: "Portal Attributes"
