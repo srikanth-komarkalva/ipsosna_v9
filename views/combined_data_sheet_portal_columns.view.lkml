@@ -108,7 +108,7 @@ view: combined_data_sheet_portal_columns {
   dimension: attribute_selector1_sort {
     hidden: yes
     sql:
-    {% if attribute_selector1._parameter_value == 'time_period_label' %}
+    {% if attribute_selector1._parameter_value == 'TimePeriodLabel' %}
       ${wave_date}
     {% else %}
       ${attribute_selector1_dim}
@@ -118,7 +118,7 @@ view: combined_data_sheet_portal_columns {
   dimension: attribute_selector2_sort {
     hidden: yes
     sql:
-    {% if attribute_selector2._parameter_value == 'time_period_label' %}
+    {% if attribute_selector2._parameter_value == 'TimePeriodLabel' %}
       ${wave_date}
     {% else %}
       ${attribute_selector2_dim}
@@ -444,9 +444,44 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.WtCount ;;
   }
 
+  dimension: sig_test_choice {
+    label: "Significance Dim"
+    type: string
+    group_label: "Sig Test Attributes"
+    sql:
+    CASE ${significance_dropdown_dim}
+    WHEN "WoW" THEN ${sig_test_primary}
+    WHEN "YoY" THEN ${sig_test_secondary}
+    END ;;
+  }
+
+  measure: Weighted_Pct {
+    label: "Weighted Percent"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+  }
+
+  measure: Weighted_Pct_Test {
+    label: "Weighted Percent(Test)"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+    html: Significance: {{ sig_test_choice._rendered_value }}>> ;;
+  }
+
+#   measure: Weighted_Pct {
+#     label: "Weighted Percent"
+#     type: number
+#     value_format_name: percent_0
+#     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+#     html: {{ rendered_value }} || Significance: {{ sig_test_choice._rendered_value }}>> ;;
+#   }
+
   measure: effective_base {
     type: sum
     label: "Effective Base"
+    value_format_name: decimal_0
     sql: ${TABLE}.EffectiveBase ;;
   }
 
