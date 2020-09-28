@@ -166,6 +166,19 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
+  measure: rank_order {
+    type: number
+    group_label: "Sort Fields"
+    sql: RANK() OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC) ;;
+  }
+
+  measure: Top_2_Percent {
+    type: number
+    group_label: "Sort Fields"
+    value_format_name: percent_0
+    sql: (sum(${wt_percent}) OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC))/100 ;;
+  }
+
 #   measure: category_display_order_sum {
 #     type: sum
 #     hidden: yes
