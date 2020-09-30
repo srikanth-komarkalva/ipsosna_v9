@@ -1,48 +1,6 @@
 view: combined_data_sheet_portal_columns {
   sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
     ;;
-#   derived_table: {
-# #     datagroup_trigger: ipsosna_v9_default_datagroup
-#     sql:
-#     SELECT
-# MarketId,
-# TimePeriodId,
-# MetricGroupId,
-# metricID,
-# MetricCategoryId,
-# ProductId,
-# BannerId,
-# UnWtCount,
-# UnWtBase,
-# WtCount,
-# WtBase,
-# EffectiveBase,
-# WtPercent,
-# SigTestPrimary,
-# SigTestSecondary,
-# MarketCode,
-# TimePeriodLabel,
-# MetricGroupLabel,
-# MetricCode,
-# MetricLabel,
-# MetricCategoryLabel,
-# ProductLabel,
-# ProductColorHexCode,
-# BannerGroupLabel,
-# BannerLabel,
-# BannerColorHexCode,
-# BannerDisplayOrder,
-# MetricDisplayOrder,
-# CategoryDisplayOrder,
-# ProductDisplayOrder,
-# SigTestCodes,
-# SigTestNumberOfItemsComparedAgainst,
-# Score,
-# RankDesc,
-# FROM YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns
-# ORDER BY categoryDisplayOrder;;
-# }
-
 
 #Defining parameters for Dynamic column selection in Cross tab charts
   parameter: attribute_selector1 {
