@@ -137,37 +137,6 @@ view: combined_data_sheet_portal_columns {
     sql: (sum(${wt_percent}) OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC))/100 ;;
   }
 
-#   measure: category_display_order_sum {
-#     type: sum
-#     hidden: yes
-#     group_label: "Sort Fields"
-#     sql: ${TABLE}.CategoryDisplayOrder ;;
-#   }
-
-#   measure: category_display_order_sort {
-#     type: number
-# #     hidden: yes
-#     group_label: "Sort Fields"
-#     sql:
-#     CASE ${category_display_order}
-#     WHEN MAX(${category_display_order}) THEN 1
-#     WHEN MAX(${category_display_order})-1 THEN 2
-#     WHEN MAX(${category_display_order})-2 THEN 3
-#     WHEN MAX(${category_display_order})-3 THEN 4
-#     WHEN MAX(${category_display_order})-4 THEN 5
-#     END
-#     ;;
-#   }
-
-#   dimension: category_display_order_1 {
-#     type: number
-#     group_label: "Sort Fields"
-#     sql: sum(${category_display_order}) OVER ( PARTITION BY
-#                     {% if market_code._is_selected %}  ${market_code}, {% endif %}
-#                     {% if time_period_label._is_selected %} ${time_period_label}, {% endif %}
-#                     1);;
-#   }
-
   dimension: market_code {
     label: "Country"
     type: string
@@ -191,8 +160,6 @@ view: combined_data_sheet_portal_columns {
     type: string
     label: "Response Label"
     group_label: "Question Information"
-#     order_by_field: category_display_order
-#     skip_drill_filter: yes
     sql: ${TABLE}.MetricCategoryLabel ;;
   }
 
@@ -301,7 +268,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: sig_test_primary {
-    label: "Stat Test Result"
+    label: "Stat Test Primary"
     type: string
     group_label: "Sig Test Attributes"
     sql: ${TABLE}.SigTestPrimary ;;
@@ -399,6 +366,17 @@ view: combined_data_sheet_portal_columns {
     WHEN "WoW" THEN ${sig_test_primary}
     WHEN "YoY" THEN ${sig_test_secondary}
     END ;;
+
+    html:
+    {% if value == 'Increase' %}
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
+    {% elsif value == 'Decrease' %}
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
+    {% elsif value == 'No change' %}
+    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
+    {% elsif value == 'N/A' %}
+    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
+    {% endif %} ;;
   }
 
   measure: Weighted_Pct {
@@ -408,8 +386,45 @@ view: combined_data_sheet_portal_columns {
     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
   }
 
+  measure: Weighted_Pct_Crosstab {
+    label: "Weighted Percent"
+    group_label: "For Developers"
+    description: "Weighted % for Crosstab report"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% endif %}
+    ;;
+  }
+
   measure: Weighted_Pct_Line {
     label: "Weighted Percent"
+    group_label: "For Developers"
     description: "Weighted % for Trend chart"
     type: number
     value_format_name: percent_0
@@ -441,7 +456,6 @@ view: combined_data_sheet_portal_columns {
 
     {% endif %}
     ;;
-
   }
 
   measure: effective_base {
