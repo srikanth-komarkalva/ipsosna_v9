@@ -258,11 +258,13 @@ view: combined_data_sheet_portal_columns {
   dimension: sig_test_codes {
     group_label: "Sig Test Attributes"
     type: number
+    hidden: yes
     sql: ${TABLE}.SigTestCodes ;;
   }
 
   dimension: sig_test_number_of_items_compared_against {
     type: number
+    hidden: yes
     group_label: "Sig Test Attributes"
     sql: ${TABLE}.SigTestNumberOfItemsComparedAgainst ;;
   }
@@ -377,6 +379,19 @@ view: combined_data_sheet_portal_columns {
     {% elsif value == 'N/A' %}
     <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
     {% endif %} ;;
+  }
+
+  dimension: Sig_Sort {
+    label: "Significance Sort"
+    type: number
+    group_label: "Sig Test Attributes"
+    sql:
+    CASE ${sig_test_choice}
+    WHEN "Increase" THEN 1
+    WHEN "Decrease" THEN 3
+    WHEN "No change" THEN 2
+    WHEN "N/A" THEN 4
+    END ;;
   }
 
   measure: Weighted_Pct {
