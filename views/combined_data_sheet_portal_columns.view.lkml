@@ -84,7 +84,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: banner_color_hex_code {
-#     hidden: yes
+    hidden: yes
     group_label: "Portal Attributes"
     type: string
     sql: ${TABLE}.BannerColorHexCode ;;
@@ -126,13 +126,13 @@ view: combined_data_sheet_portal_columns {
 
   measure: rank_order {
     type: number
-    group_label: "Sort Fields"
+    group_label: "For Developers"
     sql: RANK() OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC) ;;
   }
 
   measure: Top_2_Percent {
     type: number
-    group_label: "Sort Fields"
+    group_label: "For Developers"
     value_format_name: percent_0
     sql: (sum(${wt_percent}) OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC))/100 ;;
   }
@@ -297,21 +297,21 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: wave_year {
-#     hidden: yes
+    hidden: yes
     group_label: "Demographic Fields"
     type: number
     sql: CAST(SUBSTR(${time_period_label},4,4) AS INT64);;
   }
 
   dimension: wave_month_part {
-#     hidden: yes
+    hidden: yes
     group_label: "Demographic Fields"
     type: string
     sql: SUBSTR(${time_period_label},1,2);;
   }
 
   dimension: wave_month {
-#     hidden: yes
+    hidden: yes
     group_label: "Demographic Fields"
     type: number
     sql: CAST(
@@ -489,6 +489,7 @@ view: combined_data_sheet_portal_columns {
 
   measure: stat_result {
     label: "Significance"
+    group_label: "For Developers"
     type: sum
     sql:
     CASE ${significance_dropdown_dim}
