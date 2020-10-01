@@ -444,43 +444,6 @@ view: combined_data_sheet_portal_columns {
 
   }
 
-  # {% if significance_dropdown_dim._rendered_value == 'WoW' %}
-  #   Weighted Pct: {{rendered_value}} Significance: {{stat_result._value}}
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' %}
-  #   Weighted Pct: {{rendered_value}} Significance: {{stat_result._value}}
-
-  #   {% endif %}
-  #   ;;
-
-  # {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 1 %}
-  #   Weighted Pct: {{rendered_value}} Significance: Increase
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == -1 %}
-  #   Weighted Pct: {{rendered_value}} Significance: Decrease
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 0 %}
-  #   Weighted Pct: {{rendered_value}} Significance: No change
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 2 %}
-  #   Weighted Pct: {{rendered_value}} Significance: N/A
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 1 %}
-  #   Weighted Pct: {{rendered_value}} Significance: Increase
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == -1 %}
-  #   Weighted Pct: {{rendered_value}} Significance: Decrease
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 0 %}
-  #   Weighted Pct: {{rendered_value}} Significance: No change
-
-  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 2 %}
-  #   Weighted Pct: {{rendered_value}} Significance: N/A
-
-  #   {% endif %}
-
-
-
   measure: effective_base {
     type: sum
     label: "Effective Base"
