@@ -448,6 +448,7 @@ view: combined_data_sheet_portal_columns {
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
     <br>Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">Increase</p></br>
+
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
     <br> Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center">Decrease</p></br>
