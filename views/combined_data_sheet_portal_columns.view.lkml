@@ -446,28 +446,35 @@ view: combined_data_sheet_portal_columns {
     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
     html:
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
-    Weighted Pct: {{rendered_value}} Significance: Increase
-
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">Increase</p></br>
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
-    Weighted Pct: {{rendered_value}} Significance: Decrease
+    Weighted Pct: {{rendered_value}}
+    <br> Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center">Decrease</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
-    Weighted Pct: {{rendered_value}} Significance: No change
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">No change</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
-    Weighted Pct: {{rendered_value}} Significance: N/A
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">N/A</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
-    Weighted Pct: {{rendered_value}} Significance: Increase
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">Increase</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
-    Weighted Pct: {{rendered_value}} Significance: Decrease
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center">Decrease</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
-    Weighted Pct: {{rendered_value}} Significance: No change
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">No change</p></br>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
-    Weighted Pct: {{rendered_value}} Significance: N/A
+    Weighted Pct: {{rendered_value}}
+    <br>Significance: <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">N/A</p></br>
 
     {% endif %}
     ;;
