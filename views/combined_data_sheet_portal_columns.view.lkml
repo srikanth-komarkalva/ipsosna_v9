@@ -218,11 +218,6 @@ view: combined_data_sheet_portal_columns {
           SPLIT(${metric_code}, '_')[SAFE_OFFSET(1)])
           ;;
   }
-#   dimension: metric_without_brand_new {
-#     type: string
-#     group_label: "Question Information"
-#     sql:  REGEXP_EXTRACT(${metric_code}, r"(^[a-zA-Z0-9_.+-]+){2}(^[a-zA-Z0-9_.+-]+)") ;;
-#   }
 
   dimension: metric_display_order {
     type: number
@@ -360,26 +355,6 @@ view: combined_data_sheet_portal_columns {
           AS INT64) ;;
   }
 
-#   dimension: wave_day_part {
-#     hidden: yes
-#     group_label: "Demographic Fields"
-#     type: string
-#     sql: SUBSTR(${time_period_label},12,2);;
-#   }
-
-#   dimension: wave_day {
-#     hidden: yes
-#     group_label: "Demographic Fields"
-#     type: number
-#     sql: CAST(CASE ${wave_day_part}
-#           WHEN 'W1' THEN 1
-#           WHEN 'W2' THEN 15
-#           WHEN 'Ne' THEN 1
-#           WHEN 'Pa' THEN 1
-#           ELSE 1
-#           END AS INT64) ;;
-#   }
-
   dimension: wave_date {
     label: "Wave (Date)"
     group_label: "Demographic Fields"
@@ -433,21 +408,78 @@ view: combined_data_sheet_portal_columns {
     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
   }
 
-  measure: Weighted_Pct_Test {
-    label: "Weighted Percent(Test)"
+  measure: Weighted_Pct_Line {
+    label: "Weighted Percent"
+    description: "Weighted % for Trend chart"
     type: number
     value_format_name: percent_0
     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
-    html: Significance: {{ sig_test_choice._rendered_value }}>> ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    Weighted Pct: {{rendered_value}} Significance: Increase
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    Weighted Pct: {{rendered_value}} Significance: Decrease
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    Weighted Pct: {{rendered_value}} Significance: No change
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    Weighted Pct: {{rendered_value}} Significance: N/A
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    Weighted Pct: {{rendered_value}} Significance: Increase
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    Weighted Pct: {{rendered_value}} Significance: Decrease
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    Weighted Pct: {{rendered_value}} Significance: No change
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    Weighted Pct: {{rendered_value}} Significance: N/A
+
+    {% endif %}
+    ;;
+
   }
 
-#   measure: Weighted_Pct {
-#     label: "Weighted Percent"
-#     type: number
-#     value_format_name: percent_0
-#     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
-#     html: {{ rendered_value }} || Significance: {{ sig_test_choice._rendered_value }}>> ;;
-#   }
+  # {% if significance_dropdown_dim._rendered_value == 'WoW' %}
+  #   Weighted Pct: {{rendered_value}} Significance: {{stat_result._value}}
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' %}
+  #   Weighted Pct: {{rendered_value}} Significance: {{stat_result._value}}
+
+  #   {% endif %}
+  #   ;;
+
+  # {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 1 %}
+  #   Weighted Pct: {{rendered_value}} Significance: Increase
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == -1 %}
+  #   Weighted Pct: {{rendered_value}} Significance: Decrease
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 0 %}
+  #   Weighted Pct: {{rendered_value}} Significance: No change
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._rendered_value == 2 %}
+  #   Weighted Pct: {{rendered_value}} Significance: N/A
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 1 %}
+  #   Weighted Pct: {{rendered_value}} Significance: Increase
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == -1 %}
+  #   Weighted Pct: {{rendered_value}} Significance: Decrease
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 0 %}
+  #   Weighted Pct: {{rendered_value}} Significance: No change
+
+  #   {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._rendered_value == 2 %}
+  #   Weighted Pct: {{rendered_value}} Significance: N/A
+
+  #   {% endif %}
+
+
 
   measure: effective_base {
     type: sum
@@ -457,6 +489,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   measure: stat_result {
+    label: "Significance"
     type: sum
     sql:
     CASE ${significance_dropdown_dim}
@@ -475,6 +508,16 @@ view: combined_data_sheet_portal_columns {
           WHEN 'N/A' THEN 2
           END)
     END ;;
+    html:
+    {% if value == 1 %}
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
+    {% elsif value == -1 %}
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
+    {% elsif value == 0 %}
+    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
+    {% elsif value == 2 %}
+    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
+    {% endif %} ;;
   }
 
   measure: wt_percent {
