@@ -1,6 +1,6 @@
 view: combined_data_sheet_portal_columns {
   sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
-    ;;
+   ;;
 
 #Defining parameters for Dynamic column selection in Cross tab charts
   parameter: attribute_selector1 {
@@ -124,11 +124,12 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
-  measure: rank_order {
-    type: number
-    group_label: "For Developers"
-    sql: RANK() OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC) ;;
-  }
+  # measure: rank_order {
+  #   hidden: yes
+  #   type: number
+  #   group_label: "For Developers"
+  #   sql: RANK() OVER (PARTITION BY MetricCategoryLabel ORDER BY CategoryDisplayOrder) ;;
+  # }
 
   measure: Top_2_Percent {
     type: number
@@ -160,6 +161,7 @@ view: combined_data_sheet_portal_columns {
     type: string
     label: "Response Label"
     group_label: "Question Information"
+    # order_by_field: sort_view.rank_sort
     sql: ${TABLE}.MetricCategoryLabel ;;
   }
 
