@@ -125,7 +125,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   measure: rank_order {
-    hidden: yes
+    # hidden: yes
     type: number
     description: "For Top Metrics Top-2 box"
     group_label: "For Developers"
