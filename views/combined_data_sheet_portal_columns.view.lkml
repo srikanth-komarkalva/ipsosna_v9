@@ -222,6 +222,12 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.MetricLabel ;;
   }
 
+  dimension: metric_label_without_brand {
+    type: string
+    group_label: "Question Information"
+    sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
+  }
+
   dimension: product_color_hex_code {
     group_label: "Portal Attributes"
     type: string
@@ -404,6 +410,13 @@ view: combined_data_sheet_portal_columns {
     sql: ${wt_count}/NULLIF(${wt_base},0) ;;
   }
 
+  # measure: Weighted_Pct_test {
+  #   label: "Weighted Percent (for sum)"
+  #   type: sum
+  #   value_format_name: percent_0
+  #   sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+  # }
+
   measure: Weighted_Pct_Crosstab {
     label: "Weighted Percent"
     group_label: "For Developers"
@@ -526,10 +539,10 @@ view: combined_data_sheet_portal_columns {
 
   measure: wt_percent {
     type: sum
-    hidden: yes
-    label: "Weighted Percent"
+    # hidden: yes
+    label: "Weighted Percent (original)"
     value_format_name: percent_0
-    sql: ${TABLE}.WtPercent ;;
+    sql: (${TABLE}.WtPercent)/100 ;;
   }
 
   parameter: significance_dropdown {
