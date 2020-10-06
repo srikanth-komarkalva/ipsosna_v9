@@ -124,12 +124,13 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.CategoryDisplayOrder ;;
   }
 
-  # measure: rank_order {
-  #   hidden: yes
-  #   type: number
-  #   group_label: "For Developers"
-  #   sql: RANK() OVER (PARTITION BY MetricCategoryLabel ORDER BY CategoryDisplayOrder) ;;
-  # }
+  measure: rank_order {
+    hidden: yes
+    type: number
+    description: "For Top Metrics Top-2 box"
+    group_label: "For Developers"
+    sql: RANK() OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC) ;;
+  }
 
   measure: Top_2_Percent {
     type: number
