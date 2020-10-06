@@ -136,7 +136,7 @@ view: combined_data_sheet_portal_columns {
     type: number
     group_label: "For Developers"
     value_format_name: percent_0
-    sql: (sum(${wt_percent}) OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC))/100 ;;
+    sql: (sum(${wt_percent}) OVER (PARTITION BY MetricCode ORDER BY CategoryDisplayOrder DESC)) ;;
   }
 
   dimension: market_code {
