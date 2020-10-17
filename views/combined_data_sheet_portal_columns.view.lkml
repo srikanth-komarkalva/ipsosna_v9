@@ -1,7 +1,5 @@
 view: combined_data_sheet_portal_columns {
-  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`
-   ;;
-
+  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`;;
   # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
 
 # Parameters Section
@@ -206,6 +204,14 @@ view: combined_data_sheet_portal_columns {
 
 # Metrics Section
 
+  dimension: metric_code {
+    label: "Metric"
+    group_label: "Question Information"
+    order_by_field: metric_display_order
+    type: string
+    sql: ${TABLE}.metricCodeSegment ;;
+  }
+
   dimension: metric_category_label {
     type: string
     label: "Response Label"
@@ -214,28 +220,20 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.responseLabel ;;
   }
 
-  dimension: metric_code {
-    label: "Metric"
-   group_label: "Question Information"
-    order_by_field: metric_display_order
-    type: string
-    sql: ${TABLE}.metricCodeSegment ;;
-  }
+  # dimension: metric_without_brand {
+  #   type: string
+  #   group_label: "Question Information"
+  #   sql: REPLACE(${metric_code},CONCAT('_',${product_label}),'') ;;
+  # }
 
-  dimension: metric_without_brand {
-    type: string
-    group_label: "Question Information"
-    sql: REPLACE(${metric_code},CONCAT('_',${product_label}),'') ;;
-  }
-
-  dimension: metric_without_brand_new {
-    type: string
-    group_label: "Question Information"
-    sql:  CONCAT(
-          SPLIT(${metric_code}, '_')[SAFE_OFFSET(0)],"_",
-          SPLIT(${metric_code}, '_')[SAFE_OFFSET(1)])
-          ;;
-  }
+  # dimension: metric_without_brand_new {
+  #   type: string
+  #   group_label: "Question Information"
+  #   sql:  CONCAT(
+  #         SPLIT(${metric_code}, '_')[SAFE_OFFSET(0)],"_",
+  #         SPLIT(${metric_code}, '_')[SAFE_OFFSET(1)])
+  #         ;;
+  # }
 
   dimension: metric_id {
     type: number
@@ -245,23 +243,17 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.metricID ;;
   }
 
-  dimension: metric_label {
-    type: string
-    group_label: "Question Information"
-    sql: ${TABLE}.metricLabel ;;
-  }
-
-  dimension: metric_label_without_brand {
-    type: string
-    group_label: "Question Information"
-    sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
-  }
-
   dimension: product_id {
     group_label: "Question Information"
     type: number
     hidden: yes
     sql: ${TABLE}.brandCode ;;
+  }
+
+  dimension: metric_label {
+    type: string
+    group_label: "Question Information"
+    sql: ${TABLE}.metricLabel ;;
   }
 
   dimension: product_label {
@@ -271,6 +263,12 @@ view: combined_data_sheet_portal_columns {
     group_label: "Question Information"
     sql: ${TABLE}.brandLabel ;;
   }
+
+  # dimension: metric_label_without_brand {
+  #   type: string
+  #   group_label: "Question Information"
+  #   sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
+  # }
 
 # Significance Attributes Section
 
@@ -382,20 +380,20 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.effectiveBase ;;
   }
 
-  measure: rank_order {
-    # hidden: yes
-    type: number
-    description: "For Top Metrics Top-2 box"
-    group_label: "For Developers"
-    sql: RANK() OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC) ;;
-  }
+  # measure: rank_order {
+  #   # hidden: yes
+  #   type: number
+  #   description: "For Top Metrics Top-2 box"
+  #   group_label: "For Developers"
+  #   sql: RANK() OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC) ;;
+  # }
 
-  measure: Top_2_Percent {
-    type: number
-    group_label: "For Developers"
-    value_format_name: percent_0
-    sql: (sum(${wt_percent}) OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC)) ;;
-  }
+  # measure: Top_2_Percent {
+  #   type: number
+  #   group_label: "For Developers"
+  #   value_format_name: percent_0
+  #   sql: (sum(${wt_percent}) OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC)) ;;
+  # }
 
   measure: Weighted_Pct_Crosstab {
     label: "Weighted Percent"
@@ -476,8 +474,6 @@ view: combined_data_sheet_portal_columns {
     {% endif %}
     ;;
   }
-
-
 
   measure: stat_result {
     label: "Significance"
