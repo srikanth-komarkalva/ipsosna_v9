@@ -108,7 +108,7 @@ view: combined_data_sheet_portal_columns {
 # Demographic Fields Section
 
   dimension: banner_label {
-    label: "Banner Label"
+    label: "Demographics"
     type: string
     group_label: "Demographic Fields"
     sql: ${TABLE}.demoCode ;;
@@ -168,6 +168,7 @@ view: combined_data_sheet_portal_columns {
     label: "Wave (Date)"
     group_label: "Demographic Fields"
     type: date
+    hidden: yes
     sql: CAST(date(${wave_year},${wave_month},1) as TIMESTAMP) ;;
   }
 
@@ -178,6 +179,27 @@ view: combined_data_sheet_portal_columns {
     label: "Metric Order"
     group_label: "Sort Fields"
     sql: ${TABLE}.metricOrder;;
+  }
+
+  dimension: rank {
+    type: number
+    label: "Rank"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rank;;
+  }
+
+  dimension: rank_label {
+    type: string
+    label: "Rank Label"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rankLabel;;
+  }
+
+  dimension: rank_score {
+    type: number
+    label: "Rank Score"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rankScore;;
   }
 
   dimension: category_display_order {
@@ -682,6 +704,67 @@ view: combined_data_sheet_portal_columns {
 
 # background-color: lightblue
 # background-color: lightgrey;
+
+  measure: Weighted_Pct_brand_snapshot {
+    label: "Weighted Percent (Brand Snapshot)"
+    group_label: "For Developers"
+    description: "Weighted % for Trend chart"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(round(${wt_base}),0) ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    {{rendered_value}}
+    <div> Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    {{rendered_value}}
+    <div> Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: white; font-size:100%; text-align:left">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: white; font-size:100%; text-align:left">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: black; font-size:100%; text-align:left">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    Rank: <div style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    {{rendered_value}}
+    <div>Significance: <p style="color: black; font-size:100%; text-align:left">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    {% endif %}
+    ;;
+  }
+
   measure: stat_result {
     label: "Significance"
     group_label: "For Developers"
