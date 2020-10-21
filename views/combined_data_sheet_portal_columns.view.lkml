@@ -1,12 +1,12 @@
 view: combined_data_sheet_portal_columns {
-  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`;;
+  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblOutputDatasheet`;;
+  # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`;;
   # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
 
 # Parameters Section
 
   parameter: attribute_selector1 {
     label: "Banner Selector 1"
-#     description: "Banner selector for crosstabs"
     type: unquoted
 
     allowed_value: {
@@ -21,12 +21,11 @@ view: combined_data_sheet_portal_columns {
 
     allowed_value: {
       label: "Wave"
-      value: "timePeriodCode"
+      value: "timePeriodLabel"
     }
   }
 
   parameter: attribute_selector2 {
-#     description: "Banner selector for crosstabs"
     label: "Banner Selector 2"
     type: unquoted
 
@@ -42,7 +41,7 @@ view: combined_data_sheet_portal_columns {
 
     allowed_value: {
       label: "Wave"
-      value: "timePeriodCode"
+      value: "timePeriodLabel"
     }
   }
 
@@ -67,7 +66,7 @@ view: combined_data_sheet_portal_columns {
   dimension: attribute_selector1_sort {
     hidden: yes
     sql:
-    {% if attribute_selector1._parameter_value == 'timePeriodCode' %}
+    {% if attribute_selector1._parameter_value == 'timePeriodLabel' %}
       ${time_period_order}
     {% else %}
       ${attribute_selector1_dim}
@@ -77,7 +76,7 @@ view: combined_data_sheet_portal_columns {
   dimension: attribute_selector2_sort {
     hidden: yes
     sql:
-    {% if attribute_selector2._parameter_value == 'timePeriodCode' %}
+    {% if attribute_selector2._parameter_value == 'timePeriodLabel' %}
       ${time_period_order}
     {% else %}
       ${attribute_selector2_dim}
@@ -134,7 +133,7 @@ view: combined_data_sheet_portal_columns {
     label: "Wave"
     order_by_field: time_period_order
     group_label: "Demographic Fields"
-    sql: ${TABLE}.timePeriodCode ;;
+    sql: ${TABLE}.timePeriodLabel ;;
   }
 
   dimension: wave_year {
@@ -212,6 +211,111 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.metricCodeSegment ;;
   }
 
+  dimension: metric_code_funnel {
+    label: "Funnel Metric"
+    description: "For Google"
+    group_label: "Question Information"
+    order_by_field: metric_display_order
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Perf_Fam" THEN "Familiarity"
+    WHEN "Perf_Partner_Goals" THEN "Comprehension"
+    WHEN "Perf_Preferred" THEN "Usage"
+    ELSE ${metric_code}
+    END;;
+    html:
+    <div style="word-wrap:break-word;overflow-wrap: break-word;width:100px;text-align:left;justify-content:center;"></div>{{ rendered_value }};;
+  }
+
+  dimension: metric_code_funnel_youtube {
+    label: "Funnel Metric"
+    description: "For YouTube"
+    group_label: "Question Information"
+    order_by_field: metric_display_order
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Brand_Fam" THEN "Familiarity"
+    WHEN "Brand_Easy" THEN "Comprehension"
+    WHEN "Brand_Biz_Results" THEN "Usage"
+    ELSE ${metric_code}
+    END;;
+    html:
+    <div style="word-wrap:break-word;overflow-wrap: break-word;width:100px;text-align:left;justify-content:center;"></div>{{ rendered_value }};;
+  }
+
+  dimension: funnel_sort {
+    group_label: "For Developers"
+    type: string
+    sql:
+    CASE ${metric_code_funnel_youtube}
+    WHEN "Familiarity" THEN 1
+    WHEN "Comprehension" THEN 2
+    WHEN "Usage" THEN 3
+    ELSE 0
+    END
+    ;;
+  }
+
+  dimension: funnel_sort_google {
+    group_label: "For Developers"
+    type: string
+    sql:
+    CASE ${metric_code_funnel}
+    WHEN "Familiarity" THEN 1
+    WHEN "Comprehension" THEN 2
+    WHEN "Usage" THEN 3
+    ELSE 0
+    END
+    ;;
+  }
+
+  dimension: metric_code_funnel_functional {
+    label: "Funnel Metric"
+    group_label: "Question Information"
+    order_by_field: metric_display_order
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Perf_In_Store" THEN "Drives Sales"
+    WHEN "Perf_Target" THEN "Targets the right audiences for my business"
+    WHEN "Perf_Partner_Goals" THEN "Understands my business goals"
+    WHEN "Perf_Partner_Growth" THEN "Partner in driving business growth"
+    ELSE ${metric_code}
+    END;;
+    html:
+     <h1 style="font-size:100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align:left;
+    justify-content:center;
+    width:200 px">{{ rendered_value }}</h1> ;;
+  }
+
+  dimension: metric_code_funnel_functional_youtube {
+    label: "Funnel Metric"
+    group_label: "For Developers"
+    description: "For YouTube"
+    order_by_field: metric_display_order
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Brand_Biz_Results" THEN "Drives Sales"
+    WHEN "Brand_Audiences" THEN "Targets the right audiences for my business"
+    WHEN "Brand_Easy" THEN "Shows products and services at their best"
+    WHEN "Brand_Ad_Results" THEN "Provides affordable solutions to promote my business"
+    ELSE ${metric_code}
+    END;;
+    html:
+     <h1 style="font-size:100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align:left;
+    justify-content:center;
+    width:200 px">{{ rendered_value }}</h1> ;;
+  }
+
   dimension: metric_category_label {
     type: string
     label: "Response Label"
@@ -219,21 +323,6 @@ view: combined_data_sheet_portal_columns {
     order_by_field: category_display_order
     sql: ${TABLE}.responseLabel ;;
   }
-
-  # dimension: metric_without_brand {
-  #   type: string
-  #   group_label: "Question Information"
-  #   sql: REPLACE(${metric_code},CONCAT('_',${product_label}),'') ;;
-  # }
-
-  # dimension: metric_without_brand_new {
-  #   type: string
-  #   group_label: "Question Information"
-  #   sql:  CONCAT(
-  #         SPLIT(${metric_code}, '_')[SAFE_OFFSET(0)],"_",
-  #         SPLIT(${metric_code}, '_')[SAFE_OFFSET(1)])
-  #         ;;
-  # }
 
   dimension: metric_id {
     type: number
@@ -256,6 +345,19 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.metricLabel ;;
   }
 
+  dimension: metric_label_without_brand {
+    type: string
+    group_label: "Question Information"
+    sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
+    html:
+    <h1 style="font-size:100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align:left;
+    justify-content: center;
+    width:200 px">{{ rendered_value }}</h1> ;;
+  }
+
   dimension: product_label {
     type: string
     label: "Brand"
@@ -263,12 +365,6 @@ view: combined_data_sheet_portal_columns {
     group_label: "Question Information"
     sql: ${TABLE}.brandLabel ;;
   }
-
-  # dimension: metric_label_without_brand {
-  #   type: string
-  #   group_label: "Question Information"
-  #   sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
-  # }
 
 # Significance Attributes Section
 
@@ -297,25 +393,28 @@ view: combined_data_sheet_portal_columns {
 
     html:
     {% if value == 1 %}
-    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}
+    <img src="https://www.pinclipart.com/picdir/big/106-1068494_green-fire-png-www-imgkid-com-the-image.png"
+    style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
+    </p>
     {% elsif value == -1 %}
-    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}
+    <img src="https://www.pinclipart.com/picdir/big/100-1008699_clipart-shapes-triangle-red-arrow-down-png-download.png"
+    style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
+    </p>
     {% elsif value == 0 %}
-    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
+    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}
+    <a href="https://icon-library.net/icon/no-change-icon-0.html" title="No Change Icon #285813">
+    <img src="https://www.flaticon.com/svg/static/icons/svg/54/54771.svg"
+    style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap"></a>
+    </p>
     {% elsif value == 2 %}
-    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
+    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}
+    <img src="https://cdn3.iconfinder.com/data/icons/meteocons/512/n-a-512.png"
+    style="width:15px;height:15px;float:right;display:inline-block;white-space: nowrap">
+    </p>
     {% endif %} ;;
   }
-
-  # {% if value == 'Increase' %}
-  #   <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
-  #   {% elsif value == 'Decrease' %}
-  #   <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
-  #   {% elsif value == 'No change' %}
-  #   <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
-  #   {% elsif value == 'N/A' %}
-  #   <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
-  #   {% endif %} ;;
 
   dimension: Sig_Sort {
     label: "Significance Sort"
@@ -353,7 +452,7 @@ view: combined_data_sheet_portal_columns {
     group_label: "Weight Measures"
     type: sum
     value_format_name: decimal_0
-    sql: ${TABLE}.wtBase ;;
+    sql: round(${TABLE}.wtBase) ;;
   }
 
   measure: wt_count {
@@ -379,21 +478,6 @@ view: combined_data_sheet_portal_columns {
     value_format_name: decimal_0
     sql: ${TABLE}.effectiveBase ;;
   }
-
-  # measure: rank_order {
-  #   # hidden: yes
-  #   type: number
-  #   description: "For Top Metrics Top-2 box"
-  #   group_label: "For Developers"
-  #   sql: RANK() OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC) ;;
-  # }
-
-  # measure: Top_2_Percent {
-  #   type: number
-  #   group_label: "For Developers"
-  #   value_format_name: percent_0
-  #   sql: (sum(${wt_percent}) OVER (PARTITION BY metricCodeSegment ORDER BY responseOrder DESC)) ;;
-  # }
 
   measure: Weighted_Pct_Crosstab {
     label: "Weighted Percent"
@@ -430,6 +514,119 @@ view: combined_data_sheet_portal_columns {
     {% endif %}
     ;;
   }
+  # https://www.pinclipart.com/picdir/big/106-1068494_green-fire-png-www-imgkid-com-the-image.png
+  # https://www.pinclipart.com/picdir/big/539-5393483_triangle-tree-clipart-graphic-black-and-white-green.png
+
+  measure: Weighted_Pct_with_Sig {
+    label: "Weighted Percent with Sig Arrows"
+    group_label: "For Developers"
+    description: "Weighted % for Bar with Significance"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    <div>
+    <p style="color: black;font-size:100%;background-color: lightgreen;text-align:centre;white-space: nowrap">{{rendered_value}}
+    <img src="https://www.pinclipart.com/picdir/big/106-1068494_green-fire-png-www-imgkid-com-the-image.png"
+    style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
+    </p>
+    </div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    <div>
+    <p style="color: black;font-size:100%;background-color: tomato; text-align:centre;white-space: nowrap">{{rendered_value}}
+    <img src="https://www.pinclipart.com/picdir/big/100-1008699_clipart-shapes-triangle-red-arrow-down-png-download.png"
+    style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
+    </p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{rendered_value}} </p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{rendered_value}} </p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% endif %}
+    ;;
+  }
+  # https://icon-library.net//images/no-change-icon/no-change-icon-0.jpg
+  # <div>
+  #   <p style="color: black;font-size:100%;background-color: lightblue; text-align:centre;white-space: nowrap">{{rendered_value}}
+  #   <a href="https://icon-library.net/icon/no-change-icon-0.html" title="No Change Icon #285813">
+  #   <img src="https://www.flaticon.com/svg/static/icons/svg/54/54771.svg"
+  #   style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap"></a>
+  #   </p></div>
+
+  # <div>
+  #   <p style="color: black;font-size:100%;background-color: lightgrey;text-align:centre;white-space: nowrap">{{rendered_value}}
+  #   <img src="https://cdn3.iconfinder.com/data/icons/meteocons/512/n-a-512.png"
+  #   style="width:15px;height:15px;float:right;display:inline-block;white-space: nowrap">
+  #   </p></div>
+
+
+  measure: Weighted_Pct_Funnel {
+    label: "Weighted Percent"
+    group_label: "For Developers"
+    description: "Weighted % for Funnel"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    <div><p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    <div><p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    <div><p style="color: white; font-size:100%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    <div><p style="color: white; font-size:100%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    <div><p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    <div><p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    <div><p style="color: white; font-size:100%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    <div><p style="color: white; font-size:100%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+
+    {% endif %}
+    ;;
+  }
+
+# <p style="color: black; background-color: lightblue; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
+# <p style="color: black; background-color: lightgrey; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
+
+# <p style="color: black; background-color: lightblue; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
+# <p style="color: black; background-color: lightgrey; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
 
   measure: Weighted_Pct_Line {
     label: "Weighted Percent"
@@ -437,44 +634,54 @@ view: combined_data_sheet_portal_columns {
     description: "Weighted % for Trend chart"
     type: number
     value_format_name: percent_0
-    sql: ${wt_count}/NULLIF(${wt_base},0) ;;
+    sql: ${wt_count}/NULLIF(round(${wt_base}),0) ;;
     html:
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">Increase</p></br>
+    <div> Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
-    <br> Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center">Decrease</p></br>
+    <div> Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">No change</p></br>
+    <div>Significance: <p style="color: white; font-size:100%; text-align:center">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">N/A</p></br>
+    <div>Significance: <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">Increase</p></br>
+    <div>Significance: <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: tomato; font-size:100%; text-align:center">Decrease</p></br>
+    <div>Significance: <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">No change</p></br>
+    <div>Significance: <p style="color: black; font-size:100%; text-align:center">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
     Weighted Pct: {{rendered_value}}
-    <br>Significance: <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">N/A</p></br>
+    <div>Significance: <p style="color: black; font-size:100%; text-align:center">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% endif %}
     ;;
   }
 
+# background-color: lightblue
+# background-color: lightgrey;
   measure: stat_result {
     label: "Significance"
     group_label: "For Developers"
@@ -509,16 +716,6 @@ view: combined_data_sheet_portal_columns {
     <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
     {% endif %} ;;
   }
-
-  # {% if value == 1 %}
-  #   <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
-  #   {% elsif value == -1 %}
-  #   <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
-  #   {% elsif value == 0 %}
-  #   <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
-  #   {% elsif value == 2 %}
-  #   <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
-  #   {% endif %} ;;
 
   measure: wt_percent {
     type: sum
