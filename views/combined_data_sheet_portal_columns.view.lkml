@@ -188,11 +188,26 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.rank;;
   }
 
+  measure: rank_wt_pct {
+    type: number
+    label: "Rank by %"
+    group_label: "Sort Fields"
+    sql: RANK() OVER(ORDER BY (${wt_count}/NULLIF(round(${wt_base}),0)) DESC) ;;
+  }
+
   dimension: rank_label {
     type: string
     label: "Rank Label"
     group_label: "Sort Fields"
     sql: ${TABLE}.rankLabel;;
+  }
+
+  dimension: wtMetric {
+    type: number
+    label: "Weight Metric"
+    group_label: "For Developers"
+    sql: ${TABLE}.wtMetric ;;
+
   }
 
   dimension: rank_score {
