@@ -404,6 +404,24 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.brandLabel ;;
   }
 
+
+  dimension: product_label_pivot {
+    label: "Brand (Pivot)"
+    group_label: "For Developers"
+    order_by_field: product_display_order
+    type: string
+    sql:
+    CASE ${product_label}
+    WHEN "Facebook" THEN "Facebook"
+    WHEN "Instagram" THEN "Instagram"
+    WHEN "YouTube" THEN "YouTube"
+    WHEN "Cable_TV" THEN "Cable TV"
+    WHEN "Broadcast_TV" THEN "Broadcast TV"
+    WHEN "Twitter" THEN "Twitter"
+    ELSE ${product_label}
+    END;;
+  }
+
 # Significance Attributes Section
 
   dimension: sig_test_primary {
