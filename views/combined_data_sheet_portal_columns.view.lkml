@@ -241,7 +241,7 @@ view: combined_data_sheet_portal_columns {
 # Metrics Section
 
   dimension: metric_code {
-    label: "Metric"
+    label: "Question Metric"
     group_label: "Question Information"
     order_by_field: metric_display_order
     type: string
