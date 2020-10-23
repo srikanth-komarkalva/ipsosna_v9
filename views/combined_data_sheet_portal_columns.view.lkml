@@ -249,8 +249,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: metric_code_funnel {
-    label: "Funnel Metric"
-    description: "For Google"
+    label: "Funnel Metric (Google)"
     group_label: "Question Information"
     order_by_field: metric_display_order
     type: string
@@ -266,9 +265,8 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: metric_code_funnel_youtube {
-    label: "Funnel Metric"
-    description: "For YouTube"
-    group_label: "Question Information"
+    label: "Funnel Metric (YouTube)"
+    group_label: "For Developers"
     order_by_field: metric_display_order
     type: string
     sql:
@@ -309,8 +307,9 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: metric_code_funnel_functional {
-    label: "Funnel Metric"
-    group_label: "Question Information"
+    description: "Funnel Metric (Functional - Google)"
+    label: "Metric"
+    group_label: "For Developers"
     order_by_field: metric_display_order
     type: string
     sql:
@@ -331,9 +330,9 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: metric_code_funnel_functional_youtube {
-    label: "Funnel Metric"
+    description: "Funnel Metric (Functional - YouTube)"
+    label: "Metric"
     group_label: "For Developers"
-    description: "For YouTube"
     order_by_field: metric_display_order
     type: string
     sql:
