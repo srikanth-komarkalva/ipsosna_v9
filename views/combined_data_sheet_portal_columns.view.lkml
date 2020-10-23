@@ -250,7 +250,7 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_code_funnel {
     label: "Funnel Metric (Google)"
-    group_label: "Question Information"
+    group_label: "For Developers"
     order_by_field: metric_display_order
     type: string
     sql:
@@ -283,6 +283,7 @@ view: combined_data_sheet_portal_columns {
   dimension: funnel_sort {
     group_label: "For Developers"
     type: string
+    label: "Funnel Sort YouTube"
     sql:
     CASE ${metric_code_funnel_youtube}
     WHEN "Familiarity" THEN 1
@@ -296,6 +297,7 @@ view: combined_data_sheet_portal_columns {
   dimension: funnel_sort_google {
     group_label: "For Developers"
     type: string
+    label: "Funnel Sort Google"
     sql:
     CASE ${metric_code_funnel}
     WHEN "Familiarity" THEN 1
@@ -383,7 +385,7 @@ view: combined_data_sheet_portal_columns {
 
   dimension: metric_label_without_brand {
     type: string
-    group_label: "Question Information"
+    group_label: "For Developers"
     sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
     html:
     <h1 style="font-size:100%;
