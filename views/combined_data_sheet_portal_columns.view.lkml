@@ -583,7 +583,7 @@ view: combined_data_sheet_portal_columns {
     html:
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
     <div>
-    <p style="color: black;font-size:100%;background-color: lightgreen;text-align:centre;white-space: nowrap">{{rendered_value}}
+    <p style="color: black;font-size:100%;text-align:centre;white-space: nowrap">{{rendered_value}}
     <img src="https://www.pinclipart.com/picdir/big/106-1068494_green-fire-png-www-imgkid-com-the-image.png"
     style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
     </p>
@@ -591,7 +591,7 @@ view: combined_data_sheet_portal_columns {
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     <div>
-    <p style="color: black;font-size:100%;background-color: tomato; text-align:centre;white-space: nowrap">{{rendered_value}}
+    <p style="color: black;font-size:100%;text-align:centre;white-space: nowrap">{{rendered_value}}
     <img src="https://www.pinclipart.com/picdir/big/100-1008699_clipart-shapes-triangle-red-arrow-down-png-download.png"
     style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap">
     </p></div>
@@ -604,10 +604,10 @@ view: combined_data_sheet_portal_columns {
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
-    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{rendered_value}} </p>
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}} </p>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
-    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{rendered_value}} </p>
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}} </p>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
@@ -736,9 +736,6 @@ view: combined_data_sheet_portal_columns {
     ;;
   }
 
-# background-color: lightblue
-# background-color: lightgrey;
-
   measure: Weighted_Pct_brand_snapshot {
     label: "Weighted Percent (Brand Snapshot)"
     group_label: "For Developers"
@@ -824,13 +821,13 @@ view: combined_data_sheet_portal_columns {
     END ;;
     html:
     {% if value == 1 %}
-    <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ 'Increase' }}</p>
+    <p style="color: black; font-size:100%; text-align:center">{{ 'Increase' }}</p>
     {% elsif value == -1 %}
-    <p style="color: black; background-color: tomato; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
+    <p style="color: black; font-size:100%; text-align:center">{{ 'Decrease' }}</p>
     {% elsif value == 0 %}
-    <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ 'No change' }}</p>
+    <p style="color: black; font-size:100%; text-align:center">{{ 'No change' }}</p>
     {% elsif value == 2 %}
-    <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{ 'N/A' }}</p>
+    <p style="color: black; font-size:100%; text-align:center">{{ 'N/A' }}</p>
     {% endif %} ;;
   }
 
