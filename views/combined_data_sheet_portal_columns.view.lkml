@@ -185,7 +185,14 @@ view: combined_data_sheet_portal_columns {
     type: number
     label: "Rank"
     group_label: "Sort Fields"
-    sql: ${TABLE}.rank;;
+    sql: ${TABLE}.rankBrand;;
+  }
+
+  dimension: rank_demo {
+    type: number
+    label: "Rank"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rankDemo;;
   }
 
   measure: rank_wt_pct {
@@ -199,7 +206,14 @@ view: combined_data_sheet_portal_columns {
     type: string
     label: "Rank Label"
     group_label: "Sort Fields"
-    sql: ${TABLE}.rankLabel;;
+    sql: ${TABLE}.rankBrandLabel;;
+  }
+
+  dimension: rank_demo_label {
+    type: string
+    label: "Rank Label"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rankDemoLabel;;
   }
 
   dimension: wtMetric {
@@ -214,7 +228,14 @@ view: combined_data_sheet_portal_columns {
     type: number
     label: "Rank Score"
     group_label: "Sort Fields"
-    sql: ${TABLE}.rankScore;;
+    sql: ${TABLE}.rankBrandScore;;
+  }
+
+  dimension: rank_demo_score {
+    type: number
+    label: "Rank Score"
+    group_label: "Sort Fields"
+    sql: ${TABLE}.rankDemoScore;;
   }
 
   dimension: category_display_order {
