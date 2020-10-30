@@ -401,13 +401,16 @@ view: combined_data_sheet_portal_columns {
   dimension: metric_label {
     type: string
     group_label: "Question Information"
+    hidden: yes
     sql: ${TABLE}.metricLabel ;;
   }
 
   dimension: metric_label_without_brand {
     type: string
+    label: "Metric Label"
     group_label: "For Developers"
-    sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
+    sql: ${TABLE}.metricLabel ;;
+    # sql:  SPLIT(${metric_label}, '-')[SAFE_OFFSET(1)] ;;
     html:
     <h1 style="font-size:100%;
     word-wrap: break-word;
