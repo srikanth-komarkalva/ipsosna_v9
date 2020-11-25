@@ -121,6 +121,34 @@ view: combined_data_sheet_portal_columns {
     sql: ${TABLE}.countryCode ;;
   }
 
+  dimension: dynamic_title_1 {
+    label: "Funnel Metrics Title"
+    group_label: "Developer Fields (not for use)"
+    type: string
+    sql: ${market_code} ;;
+    html:
+    <body>
+    <div style="position: fixed; top: 0px; width:100%; height: 50px;color: black; font-size:150%;text-align:center;overflow-y: hidden">
+        Google at a glance
+    </div>
+    <div style="position: fixed; top: 0px; width:100%; height: 25px;color: dimgrey; font-size:100%;text-align:center;overflow-y: hidden">
+        Funnel Metrics: {{rendered_value}}
+    </div>
+    </body>;;
+  }
+
+  dimension: dynamic_title_2 {
+    label: "Funnel Metrics Title"
+    group_label: "Developer Fields (not for use)"
+    type: string
+    sql: ${market_code} ;;
+  }
+
+  filter: dynamic_title_3 {
+    type: string
+    suggest_dimension: market_code
+  }
+
   dimension: time_period_id {
     type: number
     hidden: yes
@@ -268,6 +296,37 @@ view: combined_data_sheet_portal_columns {
     type: string
     sql: ${TABLE}.metricCodeSegment ;;
   }
+
+  dimension: metric_code_funnel_new {
+    label: "Funnel Metric for Google"
+    group_label: "For Developers"
+    # order_by_field: metric_display_order
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Perf_Consider" THEN "Consideration"
+    WHEN "Perf_Purchase" THEN "Purchase Intent"
+    WHEN "Perf_Prefer" THEN "Preference"
+    ELSE ${metric_code}
+    END;;
+    html:
+    <div style="word-wrap:break-word;overflow-wrap: break-word;width:100px;text-align:left;justify-content:center;"></div>{{ rendered_value }};;
+  }
+
+  dimension: funnel_sort_google_new {
+    group_label: "For Developers"
+    type: string
+    label: "Funnel Sort for Google "
+    sql:
+    CASE ${metric_code_funnel_new}
+    WHEN "Consideration" THEN 1
+    WHEN "Purchase Intent" THEN 2
+    WHEN "Preference" THEN 3
+    ELSE 0
+    END
+    ;;
+  }
+
 
   dimension: metric_code_funnel {
     label: "Funnel Metric (Google)"
@@ -591,6 +650,9 @@ view: combined_data_sheet_portal_columns {
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
     <p style="color: black; background-color: lightgrey; font-size:100%; text-align:center">{{rendered_value}}</p>
 
+    {% elsif stat_result._value == 2 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
     {% endif %}
     ;;
   }
@@ -637,6 +699,9 @@ view: combined_data_sheet_portal_columns {
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
+
+    {% elsif stat_result._value == 2 %}
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
     {% endif %}
@@ -697,6 +762,8 @@ view: combined_data_sheet_portal_columns {
     <div><p style="color: white; font-size:100%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
+    {% elsif stat_result._value == 2 %}
+    <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
     {% endif %}
     ;;
@@ -738,22 +805,22 @@ view: combined_data_sheet_portal_columns {
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
+    <div>Significance (YoY): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
+    <div>Significance (YoY): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
     Weighted Pct: {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; font-size:100%; text-align:center">No change</p></div>
+    <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">No change</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
     Weighted Pct: {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; font-size:100%; text-align:center">N/A</p></div>
+    <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% endif %}
@@ -794,25 +861,25 @@ view: combined_data_sheet_portal_columns {
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
     {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
+    <div>Significance (YoY): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
     <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
     {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
+    <div>Significance (YoY): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
     <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
     {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; font-size:100%; text-align:left">No change</p></div>
+    <div>Significance (YoY): <p style="color: black; font-size:100%; text-align:left">No change</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
     Rank: <div style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
     {{rendered_value}}
-    <div>Significance (WoW): <p style="color: black; font-size:100%; text-align:left">N/A</p></div>
+    <div>Significance (YoY): <p style="color: black; font-size:100%; text-align:left">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
     <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
 
@@ -842,6 +909,7 @@ view: combined_data_sheet_portal_columns {
           WHEN NULL THEN 2
           ELSE 2
           END)
+    ELSE 2
     END ;;
     html:
     {% if value == 1 %}
