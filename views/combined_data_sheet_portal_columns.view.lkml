@@ -1,5 +1,5 @@
 view: combined_data_sheet_portal_columns {
-  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblOutputDatasheet`;;
+  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblOutputDatasheetQ4`;;
   # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`;;
   # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
 
