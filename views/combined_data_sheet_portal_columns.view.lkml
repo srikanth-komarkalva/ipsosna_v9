@@ -45,6 +45,20 @@ view: combined_data_sheet_portal_columns {
     }
   }
 
+  parameter: attribute_selector3 {
+    label: "Country/Sub Group Selector"
+    type: unquoted
+
+    allowed_value: {
+      label: "Country"
+      value: "countryCode"
+    }
+    allowed_value: {
+      label: "Sub Group"
+      value: "demoCode"
+    }
+  }
+
   dimension: attribute_selector1_dim {
     group_label: "Banner Analysis"
     label: "Banner Selector 1"
@@ -61,6 +75,14 @@ view: combined_data_sheet_portal_columns {
     description: "To be used with the Banner Selector filters"
     label_from_parameter: attribute_selector2
     sql: ${TABLE}.{% parameter attribute_selector2 %};;
+  }
+
+  dimension: attribute_selector3_dim {
+    group_label: "Banner Analysis"
+    label: "Country/Sub Group Selector"
+    description: "To be used with the Banner Selector filters"
+    label_from_parameter: attribute_selector3
+    sql: ${TABLE}.{% parameter attribute_selector3 %};;
   }
 
   dimension: attribute_selector1_sort {
@@ -108,10 +130,21 @@ view: combined_data_sheet_portal_columns {
 # Demographic Fields Section
 
   dimension: banner_label {
-    label: "Demographics"
+    label: "Demographics Unformatted"
     type: string
     group_label: "Demographic Fields"
     sql: ${TABLE}.demoCode ;;
+  }
+
+  dimension: sub_group {
+    label: "Demographics"
+    type: string
+    group_label: "Demographic Fields"
+    sql:  CASE ${banner_label}
+    WHEN 'Type~Advertiser - meaning you advertise your companys products or services (including in-house agency)'  THEN 'Advertiser'
+    WHEN 'Type~Agency - meaning you advise clients on how and where to spend their advertising dollars' THEN 'Agency'
+    ELSE ${banner_label}
+    END;;
   }
 
   dimension: market_code {
@@ -300,7 +333,7 @@ view: combined_data_sheet_portal_columns {
   dimension: metric_code_funnel_new {
     label: "Funnel Metric for Google"
     group_label: "For Developers"
-    # order_by_field: metric_display_order
+    order_by_field: funnel_sort_google_new
     type: string
     sql:
     CASE ${metric_code}
