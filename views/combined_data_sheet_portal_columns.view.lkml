@@ -686,6 +686,9 @@ view: combined_data_sheet_portal_columns {
     {% elsif stat_result._value == 2 %}
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
+    (% else %}
+    Weighted Pct: {{wt_percent._value}}
+
     {% endif %}
     ;;
   }
@@ -737,23 +740,12 @@ view: combined_data_sheet_portal_columns {
     {% elsif stat_result._value == 2 %}
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
+    (% else %}
+    Weighted Pct: {{wt_percent._value}}
+
     {% endif %}
     ;;
   }
-  # https://icon-library.net//images/no-change-icon/no-change-icon-0.jpg
-  # <div>
-  #   <p style="color: black;font-size:100%;background-color: lightblue; text-align:centre;white-space: nowrap">{{rendered_value}}
-  #   <a href="https://icon-library.net/icon/no-change-icon-0.html" title="No Change Icon #285813">
-  #   <img src="https://www.flaticon.com/svg/static/icons/svg/54/54771.svg"
-  #   style="width:10px;height:10px;float:right;display:inline-block;white-space: nowrap"></a>
-  #   </p></div>
-
-  # <div>
-  #   <p style="color: black;font-size:100%;background-color: lightgrey;text-align:centre;white-space: nowrap">{{rendered_value}}
-  #   <img src="https://cdn3.iconfinder.com/data/icons/meteocons/512/n-a-512.png"
-  #   style="width:15px;height:15px;float:right;display:inline-block;white-space: nowrap">
-  #   </p></div>
-
 
   measure: Weighted_Pct_Funnel {
     label: "Weighted Percent"
@@ -798,15 +790,12 @@ view: combined_data_sheet_portal_columns {
     {% elsif stat_result._value == 2 %}
     <p style="color: black; font-size:100%; text-align:center">{{rendered_value}}</p>
 
+    (% else %}
+    Weighted Pct: {{wt_percent._value}}
+
     {% endif %}
     ;;
   }
-
-# <p style="color: black; background-color: lightblue; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
-# <p style="color: black; background-color: lightgrey; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
-
-# <p style="color: black; background-color: lightblue; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
-# <p style="color: black; background-color: lightgrey; font-size:125%; text-align:center;border: 2px blue; padding: 25px">{{rendered_value}}</p>
 
   measure: Weighted_Pct_Line {
     label: "Weighted Percent"
@@ -815,6 +804,7 @@ view: combined_data_sheet_portal_columns {
     type: number
     value_format_name: percent_0
     sql: ${wt_count}/NULLIF(round(${wt_base}),0) ;;
+    # sql:  ${wt_percent} ;;
     html:
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
@@ -855,6 +845,9 @@ view: combined_data_sheet_portal_columns {
     Weighted Pct: {{rendered_value}}
     <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    (% else %}
+    <div>Weighted Pct: {{wt_percent._value}}</div>
 
     {% endif %}
     ;;
@@ -915,6 +908,9 @@ view: combined_data_sheet_portal_columns {
     <div>Significance (YoY): <p style="color: black; font-size:100%; text-align:left">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
     <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
+    (% elsif is_null(stat_result._value) %}
+    Weighted Pct: {{wt_percent._value}}
 
     {% endif %}
     ;;
