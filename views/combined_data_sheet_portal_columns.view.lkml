@@ -52,7 +52,7 @@ view: combined_data_sheet_portal_columns {
       value: "countryCode"
     }
     allowed_value: {
-      label: "Customer Type"
+      label: "Demographic"
       value: "demoCode"
     }
   }
@@ -128,14 +128,14 @@ view: combined_data_sheet_portal_columns {
 # Demographic Fields Section
 
   dimension: banner_label {
-    label: "Customer Type Unformatted"
+    label: "Demographic Unformatted"
     type: string
     group_label: "Demographic Fields"
     sql: ${TABLE}.demoCode ;;
   }
 
   dimension: sub_group {
-    label: "Customer Type"
+    label: "Demographic"
     type: string
     group_label: "Demographic Fields"
     sql:  CASE ${banner_label}
