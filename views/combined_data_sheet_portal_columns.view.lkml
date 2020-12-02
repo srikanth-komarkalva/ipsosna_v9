@@ -1,7 +1,5 @@
 view: combined_data_sheet_portal_columns {
-  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblOutputDatasheetQ4`;;
-  # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblTempOutput6e59e63b1c3a42dd96fb50f6c82000e1`;;
-  # sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2.CombinedDataSheet_PortalColumns`
+  sql_table_name: `mgcp-1192365-ipsos-gbht-srf617.YouTubeB2B2020Q2V2.tblOutputDatasheet`;;
 
 # Parameters Section
 
@@ -54,7 +52,7 @@ view: combined_data_sheet_portal_columns {
       value: "countryCode"
     }
     allowed_value: {
-      label: "Sub Group"
+      label: "Customer Type"
       value: "demoCode"
     }
   }
@@ -130,14 +128,14 @@ view: combined_data_sheet_portal_columns {
 # Demographic Fields Section
 
   dimension: banner_label {
-    label: "Demographics Unformatted"
+    label: "Customer Type Unformatted"
     type: string
     group_label: "Demographic Fields"
     sql: ${TABLE}.demoCode ;;
   }
 
   dimension: sub_group {
-    label: "Demographics"
+    label: "Customer Type"
     type: string
     group_label: "Demographic Fields"
     sql:  CASE ${banner_label}
