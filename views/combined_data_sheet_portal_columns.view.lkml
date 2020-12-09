@@ -258,7 +258,7 @@ view: combined_data_sheet_portal_columns {
     type: number
     label: "Rank by %"
     group_label: "Sort Fields"
-    sql: RANK() OVER(ORDER BY (${wt_count}/NULLIF(round(${wt_base}),0)) DESC) ;;
+    sql: RANK() OVER(PARTITION BY ${time_period_label} ORDER BY ${rank_score} DESC) ;;
   }
 
   dimension: rank_label {
@@ -283,9 +283,9 @@ view: combined_data_sheet_portal_columns {
 
   }
 
-  dimension: rank_score {
-    type: number
-    label: "Rank Score"
+  measure: rank_score {
+    type: sum
+    label: "Rank Score for Brand"
     group_label: "Sort Fields"
     sql: ${TABLE}.rankBrandScore;;
   }
@@ -350,6 +350,36 @@ view: combined_data_sheet_portal_columns {
     label: "Funnel Sort for Google "
     sql:
     CASE ${metric_code_funnel_new}
+    WHEN "Consideration" THEN 1
+    WHEN "Purchase Intent" THEN 2
+    WHEN "Preference" THEN 3
+    ELSE 0
+    END
+    ;;
+  }
+
+  dimension: metric_code_funnel_yt_new {
+    label: "Funnel Metric for YouTube"
+    group_label: "For Developers"
+    order_by_field: funnel_sort_youtube_new
+    type: string
+    sql:
+    CASE ${metric_code}
+    WHEN "Brand_Consider" THEN "Consideration"
+    WHEN "Brand_Purchase" THEN "Purchase Intent"
+    WHEN "Brand_Prefer" THEN "Preference"
+    ELSE ${metric_code}
+    END;;
+    html:
+    <div style="word-wrap:break-word;overflow-wrap: break-word;width:100px;text-align:left;justify-content:center;"></div>{{ rendered_value }};;
+  }
+
+  dimension: funnel_sort_youtube_new {
+    group_label: "For Developers"
+    type: string
+    label: "Funnel Sort for YouTube "
+    sql:
+    CASE ${metric_code_funnel_yt_new}
     WHEN "Consideration" THEN 1
     WHEN "Purchase Intent" THEN 2
     WHEN "Preference" THEN 3
@@ -808,6 +838,70 @@ view: combined_data_sheet_portal_columns {
     Weighted Pct: {{rendered_value}}
     <div> Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
+    Weighted Pct: {{rendered_value}}
+    <div> Significance (WoW): <p style="color: black; background-color: tomato; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:center">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (YoY): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (YoY): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">No change</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
+    Weighted Pct: {{rendered_value}}
+    <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
+
+    {% endif %}
+    ;;
+  }
+
+  measure: Weighted_Pct_Line_ {
+    label: "Weighted Percent"
+    group_label: "For Developers"
+    description: "Weighted % for Trend chart without Rank"
+    type: number
+    value_format_name: percent_0
+    sql: ${wt_count}/NULLIF(round(${wt_base}),0) ;;
+    # sql:  ${wt_percent} ;;
+    html:
+    {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
+    Weighted Pct: {{rendered_value}}
+    <div> Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
+    <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
@@ -843,9 +937,6 @@ view: combined_data_sheet_portal_columns {
     Weighted Pct: {{rendered_value}}
     <div>Significance (YoY): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
-
-    (% else %}
-    <div>Weighted Pct: {{wt_percent._value}}</div>
 
     {% endif %}
     ;;
