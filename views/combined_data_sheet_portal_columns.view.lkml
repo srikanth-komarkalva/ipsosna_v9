@@ -287,6 +287,7 @@ view: combined_data_sheet_portal_columns {
     type: sum
     label: "Rank Score for Brand"
     group_label: "Sort Fields"
+    value_format_name: decimal_1
     sql: ${TABLE}.rankBrandScore;;
   }
 
