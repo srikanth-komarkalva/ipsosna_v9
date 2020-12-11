@@ -839,28 +839,28 @@ view: combined_data_sheet_portal_columns {
     Weighted Pct: {{rendered_value}}
     <div> Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
-    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+
     <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     Weighted Pct: {{rendered_value}}
     <div> Significance (WoW): <p style="color: black; background-color: tomato; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Decrease</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
-    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+
     <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
     Weighted Pct: {{rendered_value}}
     <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:center">No change</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
-    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+
     <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
     Weighted Pct: {{rendered_value}}
     <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:center">{{wt_base._value}}</p></div>
-    <div>Rank Score: <p style="color: white; font-size:100%; text-align:center">{{rank_score._value}}</p></div>
+
     <div>Rank: <p style="color: white; font-size:100%; text-align:center">{{rank_wt_pct._value}}</p></div>
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
