@@ -577,6 +577,7 @@ view: combined_data_sheet_portal_columns {
   }
 
   dimension: sig_test_secondary {
+    label: "Stat Test Secondary"
     type: number
     group_label: "Sig Test Attributes"
     sql: IFNULL(${TABLE}.sigTestYOY,2) ;;
