@@ -1094,54 +1094,75 @@ view: combined_data_sheet_portal_columns {
     {{rendered_value}}
     <div> Significance (WoW): <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == -1 %}
     {{rendered_value}}
     <div> Significance (WoW): <p style="color: black; background-color: tomato; font-size:100%; text-align:center;border: 1px blue; padding: 3px">Decrease</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 0 %}
     {{rendered_value}}
     <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:left">No change</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 2 %}
     {{rendered_value}}
     <div>Significance (WoW): <p style="color: white; font-size:100%; text-align:left">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 1 %}
     {{rendered_value}}
     <div>Significance (YoY): <p style="color: black; background-color: lightgreen; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Increase</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == -1 %}
     {{rendered_value}}
     <div>Significance (YoY): <p style="color: black; background-color: tomato; font-size:125%; text-align:center;border: 2px blue; padding: 25px">Decrease</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 0 %}
     {{rendered_value}}
     <div>Significance (YoY): <p style="color: black; font-size:100%; text-align:left">No change</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    Rank: <div style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</div>
+
 
     {% elsif significance_dropdown_dim._rendered_value == 'YoY' and stat_result._value == 2 %}
     {{rendered_value}}
     <div>Significance (YoY): <p style="color: black; font-size:100%; text-align:left">N/A</p></div>
     <div>Weighted Base: <p style="color: white; font-size:100%; text-align:left">{{wt_base._value}}</p></div>
-    <div>Rank: <p style="color: white; font-size:100%; text-align:left">{{rank_label._value}}</p></div>
+
 
     (% elsif is_null(stat_result._value) %}
     Weighted Pct: {{wt_percent._value}}
 
     {% endif %}
+
+    {% if rank_agg_calc_brand._value == 1 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">1</p></div>
+    {% elsif rank_agg_calc_brand._value == 2 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">(tie) 1</p></div>
+    {% elsif rank_agg_calc_brand._value == 3 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">2</p></div>
+    {% elsif rank_agg_calc_brand._value == 4 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">(tie) 2</p></div>
+    {% elsif rank_agg_calc_brand._value == 5 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">3</p></div>
+    {% elsif rank_agg_calc_brand._value == 6 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">(tie) 3</p></div>
+    {% elsif rank_agg_calc_brand._value == 7 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">4</p></div>
+    {% elsif rank_agg_calc_brand._value == 8 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">(tie) 4</p></div>
+    {% elsif rank_agg_calc_brand._value == 0 %}
+    <div>Rank: <p style="color: white; font-size:100%; text-align:center">N/A</p></div>
+    {% endif %}
+
     ;;
   }
 
