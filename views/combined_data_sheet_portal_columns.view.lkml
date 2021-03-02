@@ -1037,7 +1037,6 @@ view: combined_data_sheet_portal_columns {
     type: number
     value_format_name: percent_0
     sql: ${wt_count}/NULLIF(round(${wt_base}),0) ;;
-    # sql:  ${wt_percent} ;;
     html:
     {% if significance_dropdown_dim._rendered_value == 'WoW' and stat_result._value == 1 %}
     Weighted Pct: {{rendered_value}}
